@@ -2,7 +2,7 @@
 
 - **Họ tên:** Lê Hoàng Anh
 - **Lớp:** CNTT2
-- **Link repository Pha1:**
+- **Link repository Pha1:** https://github.com/HoangAnh-Pros/HN_K26_CNTT2_PromtAI_H02_Pha1/edit/main/bai_lam_pha1.md
 
 > Pha 1 (70 phút đầu, KHÔNG dùng AI). Viết xong, kéo thả file này vào repository Pha1 trước mốc giờ giám thị công bố.
 
@@ -13,7 +13,7 @@
 **GHI CHU DA AN DANH**
 
 ```text
-Khán giả [TEN_KHACH], số điện thoại [SDT_KHACH], số CCCD [CCCD_KHACH], email [EMAIL_KHACH], đặt 3 vé gói SVT trận bán kết Cúp Sao Vàng ngày 18/12/2026 cho 2 người lớn và 1 trẻ em 9 tuổi. Khán giả đã chuyển khoản đặt cọc 1.500.000 đồng. Khán giả yêu cầu 3 ghế ngồi cạnh nhau gần lối đi.
+Khán giả [TEN_KHACH], số điện thoại [SDT_KHACH], số CCCD [CCCD_KHACH], email [EMAIL_KHACH],  đặt 3 vé gói SVT trận bán kết Cúp Sao Vàng ngày 18/12/2026 cho 2 người lớn và 1 trẻ em 9 tuổi. Khán giả đã chuyển khoản đặt cọc 1.500.000 đồng. Khán giả yêu cầu 3 ghế ngồi cạnh nhau gần lối đi.
 
 ```
 
@@ -34,7 +34,7 @@ Khán giả [TEN_KHACH], số điện thoại [SDT_KHACH], số CCCD [CCCD_KHACH
 ```text
 C - CONTEXT (BỐI CẢNH):
 
-Bạn là nhân viên xử lý thông tin đặt vé của Ban tổ chức giải bóng đá Cúp Sao Vàng. Nhiệm vụ của bạn là trích xuất thông tin từ tin nhắn đặt vé của khán giả thành dữ liệu JSON chính xác.
+Bạn là nhân viên xử lý thông tin đặt vé của rạp phim Ánh Dương chỉ trả về dữ liệu dưới dạng Json
 
 Bảng mã gói:
 - SVT – Sân Vận Động: vé trận đấu.
@@ -67,31 +67,27 @@ T - TONE (GIỌNG ĐIỆU):
 Làm việc chính xác, khách quan, ngắn gọn và nhất quán. Không thêm nhận xét cá nhân.
 Hai ví dụ Few-shot:
 
-Ví dụ 1:
+Tin nhắn mẫu 1:
+Đặt giúp mình 2 vé VIP trận chung kết ngày 15/11/2026, 2 người lớn và 1 bé. Cần chỗ ngồi cạnh lối đi.
+Kết quả đúng:
+{"ma_goi": "VIP", "ngay_su_kien": "2026-11-15", "nguoi_lon": 2, "tre_em": 1, "loai_ve": "vip", "ghi_chu": "chỗ ngồi cạnh lối đi"}
 
-Tin nhắn: Đặt giúp mình 2 vé VIP trận chung kết ngày 15/11/2026, 2 người lớn và 1 bé. Cần chỗ ngồi cạnh lối đi.
-
-Kết quả:
-{"ma_goi":"VIP","ngay_su_kien":"2026-11-15","nguoi_lon":2,"tre_em":1,"loai_ve":"vip","ghi_chu":"chỗ ngồi cạnh lối đi"}
-
-
-Ví dụ 2:
-
-Tin nhắn: Cho mình một vé Fan Zone, ngày nào cũng được, mình đi một mình.
-
-Kết quả:
-{"ma_goi":"FZ","ngay_su_kien":null,"nguoi_lon":1,"tre_em":0,"loai_ve":"thuong","ghi_chu":null}
+Tin nhắn mẫu 2:
+Cho mình một vé Fan Zone, ngày nào cũng được, mình đi một mình.
+Kết quả đúng:
+{"ma_goi": "FZ", "ngay_su_kien": null, "nguoi_lon": 1, "tre_em": 0, "loai_ve": "thuong", "ghi_chu": null}
 
 
-Ba tin nhắn cần xử lý:
+
 
 <tin_nhan>
-
 TN1: Mình muốn đặt gói Sân Vận Động trận tứ kết ngày 20/12 nha, 2 người lớn với 1 bé 8 tuổi, vé thường.
 
 TN2: Cho 3 người đi Fan Zone trận ngày 05/01/2027 ạ. Một người cần hỗ trợ xe lăn.
 
 TN3: Trận chung kết Cúp Sao Vàng tháng 12 còn vé không ạ? Nhà em 4 người lớn, có một người khiếm thị cần hỗ trợ tìm chỗ, lấy vé VIP.
+
+
 
 </tin_nhan>
 
@@ -105,34 +101,38 @@ CHỈ TRẢ VỀ MỘT MẢNG JSON HỢP LỆ GỒM 3 ĐỐI TƯỢNG, KHÔNG CH
 **PROMPT**
 
 ```text
-Bạn là nhân viên báo giá vé của Ban tổ chức Cúp Sao Vàng.
+Bạn là nhân viên báo giá vé của Rạp Phim Ánh Dương
 
 Hãy tính tổng tiền theo dữ liệu:
 
 <bang_gia>
-SVT: 1.200.000 đồng/người lớn
-FZ: 800.000 đồng/người lớn
-VIP: 2.500.000 đồng/người lớn
+BẢNG GIÁ VÉ (đồng/người lớn)
+SVT – Sân Vận Động: 1.200.000
+FZ – Fan Zone: 800.000
+VIP – Khán đài VIP: 2.500.000
+
 </bang_gia>
 
 <quy_tac>
-1. Trẻ 5–11 tuổi: 70%; dưới 5 tuổi: miễn phí.
-2. Từ 5 người lớn: giảm 5% tiền vé.
-3. Ghế ưu tiên: phụ thu 300.000 đồng/người, không giảm giá.
+QUY TẮC TÍNH GIÁ
+1. Trẻ em từ 5 đến 11 tuổi tính 70% giá người lớn. Trẻ dưới 5 tuổi miễn phí.
+2. Nhóm từ 5 người lớn trở lên được giảm 5% trên tiền vé (tiền người lớn + tiền trẻ em).
+3. Phụ thu khu ghế ưu tiên: 300.000 đồng/người. Phụ thu không được giảm giá.
 4. Tổng tiền = tiền vé sau giảm + phụ thu.
+
 </quy_tac>
 
 <yeu_cau>
-Gói SVT, 5 người lớn, 2 trẻ em (8 và 10 tuổi),
-1 bé 3 tuổi, 1 người lớn chọn ghế ưu tiên.
+Nhóm cổ động viên đi xem trận bán kết, mua gói SVT, gồm 5 người lớn, 2 trẻ em (8 tuổi và 10 tuổi) và 1 bé 3 tuổi. Có 1 người lớn chọn khu ghế ưu tiên.
+
 </yeu_cau>
 
 Tính và trình bày theo đúng 6 bước:
 1. Tiền người lớn.
 2. Tiền trẻ em.
 3. Tiền vé.
-4. Giảm giá nhóm.
-5. Phụ thu.
+4. phụ thu
+5.combo
 6. Tổng tiền.
 
 Mỗi bước ghi phép tính cụ thể.
@@ -149,37 +149,23 @@ Dòng cuối bắt buộc:
 **PROMPT**
 
 ```text
-Bạn là nhân viên phân loại khiếu nại của Ban tổ chức Cúp Sao Vàng.
+Bạn là nhân viên phân loại khiếu nại của Rạp phim Ánh Dương
 
 Đọc email trong thẻ <email> và phân loại khiếu nại.
 
 <email>
 [NỘI DUNG EMAIL KHIẾU NẠI]
+Tôi là khán giả mua vé gói SVT trận Cúp Sao Vàng ngày 02/11/2026, đi 2 người lớn. Ban tổ chức cam kết khu khán đài có mái che nhưng trong 2 hiệp đầu chúng tôi bị xếp sang khu không mái, trời mưa và ghế ướt. Nhân viên soát vé rất nhiệt tình, tôi không có gì phàn nàn về nhân viên. Tôi đề nghị ban tổ chức giải quyết thỏa đáng.
+
 </email>
 
-Chỉ trả về một đối tượng JSON gồm đúng 4 trường:
-- loai_su_co: tran_gio, sai_khu_vuc, nhan_vien hoặc khac.
-- so_khach: số nguyên.
-- so_hiep_bi_anh_huong: số nguyên hoặc null.
-- tom_tat: không quá 20 từ.
 
 Không giải thích, không thêm nội dung ngoài JSON.
 ```
 
 ### b) Hai điều cần kiểm tra ở JSON đầu ra của Trạm 1
 
-1.{
-  "loai_su_co": "sai_khu_vuc",
-  "so_khach": 2,
-  "so_hiep_bi_anh_huong": 2,
-  "tom_tat": "Hai khách bị xếp khu không mái che trong hai hiệp đầu."
-}
 
-2.{
-  "loai_su_co": "sai_khu_vuc",
-  "muc_den_bu": 2000000,
-  "can_duyet": true
-}
 
 ### c) Câu lệnh viết tiếp
 
@@ -188,7 +174,7 @@ Không giải thích, không thêm nội dung ngoài JSON.
 ```text
 Hãy viết tiếp email từ đúng vị trí bị ngắt sau đoạn:
 
-"Ban tổ chức Cúp Sao Vàng xin hoàn lại Quý khán giả khoản"
+"rạh phim Anhs Dương"
 
 Không viết lại nội dung đã có, không lặp lại đoạn trước.
 Tiếp tục hoàn thành email dựa trên JSON Trạm 2.
